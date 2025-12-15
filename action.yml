@@ -1,0 +1,31 @@
+name: 'Mailgun Send Mail'
+author: 'm0rr1s-p'
+description: 'Send an email with the Mailgun API'
+
+inputs:
+  to:
+    description: 'Recipient email'
+    required: true
+  from:
+    description: 'Sender email'
+    required: true
+  message:
+    description: 'HTML message body'
+    required: true
+  subject:
+    description: 'Subject of the email'
+    required: true
+  domain:
+    description: 'Mailgun domain'
+    required: true
+  api_key:
+    description: 'Mailgun API key'
+    required: true
+
+outputs:
+  result:
+    description: 'API response'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
