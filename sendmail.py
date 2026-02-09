@@ -37,13 +37,11 @@ def main():
     input_subject: str = os.environ["INPUT_SUBJECT"]
     input_body: str = os.environ["INPUT_MESSAGE"]
 
-    print(f"TO:{input_recipient}")
-    print(f"FROM:{input_sender}")
-
+    sanitized_recipient = input_recipient.replace('"', '')
 
     client: Client = Client(auth=("api", input_key),api_url="https://api.eu.mailgun.net/")
 
-    post_message(input_sender, input_recipient, input_subject, input_body, input_domain, client)
+    post_message(input_sender, sanitized_recipient, input_subject, input_body, input_domain, client)
 
 if __name__ == "__main__":
     main()
