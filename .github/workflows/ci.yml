@@ -15,7 +15,7 @@ on:
 
 jobs:
   buildandtest:
-    if: ${{ github.event.inputs.secrets }}
+    if: ${{ inputs.secrets }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -32,7 +32,7 @@ jobs:
       - name: Print outputs
         run: echo ${{ steps.mail.outputs.result }}
   usermapp:
-    if: ${{ github.event.inputs.usermapp }}
+    if: ${{ inputs.usermapp }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
