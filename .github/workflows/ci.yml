@@ -38,9 +38,9 @@ jobs:
         id: get_email
         run: |
           EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}')
-          echo $EMAIL
-          echo "email=$EMAIL" >> $GITHUB_OUTPUT
-      - run: echo ${{ steps.get_email.outputs.email }}
+          echo "::add-mask::$EMAIL"
+          echo "USERMAPP_EMAIL=$EMAIL" >> $GITHUB_ENV
+      - run: echo ${{ env.USERMAPP_EMAIL }}
       - name: Send mail
         uses: ./
         id: mail
@@ -48,7 +48,7 @@ jobs:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
           domain: ${{ secrets.MAILGUN_DOMAIN }}
           from: ${{ secrets.MAILGUN_FROM }}
-          to: ${{ steps.get_email.outputs.email }}
+          to: ${{ env.USERMAPP_EMAIL }}
           subject: "Workflow Dispatch mailgun sendmail"
           message: '<p>Hello World</p>'
       - name: Print outputs
