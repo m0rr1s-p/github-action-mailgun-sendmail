@@ -37,6 +37,10 @@ def main():
     input_subject: str = os.environ["INPUT_SUBJECT"]
     input_body: str = os.environ["INPUT_MESSAGE"]
 
+    print(f"TO:{input_recipient}")
+    print(f"FROM:{input_sender}")
+
+
     client: Client = Client(auth=("api", input_key),api_url="https://api.eu.mailgun.net/")
 
     post_message(input_sender, input_recipient, input_subject, input_body, input_domain, client)
