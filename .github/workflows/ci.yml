@@ -3,6 +3,13 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      usermapp:
+        description: 'Use usermapp service'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   buildandtest:
@@ -17,6 +24,30 @@ jobs:
           domain: ${{ secrets.MAILGUN_DOMAIN }}
           from: ${{ secrets.MAILGUN_FROM }}
           to: ${{ secrets.MAILGUN_TO }}
+          subject: ${{ github.event.head_commit.message }}
+          message: '<p>Hello World</p>'
+      - name: Print outputs
+        run: echo ${{ steps.mail.outputs.result }}
+  usermapp:
+    if: ${{ github.event.inputs.usermapp }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Get E-Mail address of actor
+        id: get_email
+        run: |
+          EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}')
+          echo $EMAIL
+          echo "email=$EMAIL" >> $GITHUB_OUTPUT
+      - run: echo ${{ steps.get_email.outputs.email }}
+      - name: Send mail
+        uses: ./
+        id: mail
+        with:
+          api_key: ${{ secrets.MAILGUN_API_KEY }}
+          domain: ${{ secrets.MAILGUN_DOMAIN }}
+          from: ${{ secrets.MAILGUN_FROM }}
+          to: ${{ steps.get_email.outputs.email }}
           subject: ${{ github.event.head_commit.message }}
           message: '<p>Hello World</p>'
       - name: Print outputs
