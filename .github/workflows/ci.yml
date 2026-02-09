@@ -24,7 +24,7 @@ jobs:
         id: mail
         with:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
-          domain: ${{ secrets.MAILGUN_DOMAIN }}
+          domain: "mineral-minds.de"
           from: ${{ secrets.MAILGUN_FROM }}
           to: ${{ secrets.MAILGUN_TO }}
           subject: "Functional Test mailgun sendmail"
@@ -47,7 +47,7 @@ jobs:
         id: mail
         with:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
-          domain: ${{ secrets.MAILGUN_DOMAIN }}
+          domain: "mineral-minds.de"
           from: ${{ secrets.MAILGUN_FROM }}
           to: ${{ env.USERMAPP_EMAIL }}
           subject: "Workflow Dispatch mailgun sendmail"
