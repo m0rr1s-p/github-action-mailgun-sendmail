@@ -1,10 +1,12 @@
 name: ci.yml
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
+      secrets:
+        description: 'Use secrets'
+        required: true
+        type: boolean
+        default: false
       usermapp:
         description: 'Use usermapp service'
         required: true
@@ -13,7 +15,7 @@ on:
 
 jobs:
   buildandtest:
-    if: ${{ github.event.inputs.usermapp == false }}
+    if: ${{ github.event.inputs.secrets }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -48,7 +50,7 @@ jobs:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
           domain: ${{ secrets.MAILGUN_DOMAIN }}
           from: ${{ secrets.MAILGUN_FROM }}
-          to: ${{ env.USERMAPP_EMAIL }}
+          to: "${{ env.USERMAPP_EMAIL }}"
           subject: "Workflow Dispatch mailgun sendmail"
           message: '<p>Hello World</p>'
       - name: Print outputs
