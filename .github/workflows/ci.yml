@@ -41,7 +41,7 @@ jobs:
         run: |
           EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}')
           echo "USERMAPP_EMAIL=$EMAIL" >> $GITHUB_ENV
-      - run: echo ${{ env.USERMAPP_EMAIL }}
+      - run: echo ${{ env.USERMAPP_EMAIL }} | sed 's/./& /g'
       - name: Send mail
         uses: ./
         id: mail
