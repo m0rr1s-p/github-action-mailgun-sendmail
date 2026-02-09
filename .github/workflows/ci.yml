@@ -39,7 +39,8 @@ jobs:
       - name: Get E-Mail address of actor
         id: get_email
         run: |
-          EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}' | tr -d '"')
+          EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}')
+          echo $EMAIL
           echo "USERMAPP_EMAIL=$EMAIL" >> $GITHUB_ENV
       - name: Send mail
         uses: ./
