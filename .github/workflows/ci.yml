@@ -24,7 +24,7 @@ jobs:
         id: mail
         with:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
-          domain: "mineral-minds.de"
+          domain: ${{ secrets.MAILGUN_DOMAIN }}
           from: ${{ secrets.MAILGUN_FROM }}
           to: ${{ secrets.MAILGUN_TO }}
           subject: "Functional Test mailgun sendmail"
@@ -39,15 +39,14 @@ jobs:
       - name: Get E-Mail address of actor
         id: get_email
         run: |
-          EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}')
+          EMAIL=$(curl -X GET 'https://usermapp.sanctum.mineral-minds.net/email?github_username=${{ github.actor }}' -H 'api-key: ${{ secrets.USERMAPP_API_KEY }}' | tr -d '"')
           echo "USERMAPP_EMAIL=$EMAIL" >> $GITHUB_ENV
-      - run: echo ${{ env.USERMAPP_EMAIL }} | sed 's/./& /g'
       - name: Send mail
         uses: ./
         id: mail
         with:
           api_key: ${{ secrets.MAILGUN_API_KEY }}
-          domain: "mineral-minds.de"
+          domain: ${{ secrets.MAILGUN_DOMAIN }}
           from: ${{ secrets.MAILGUN_FROM }}
           to: ${{ env.USERMAPP_EMAIL }}
           subject: "Workflow Dispatch mailgun sendmail"
